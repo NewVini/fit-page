@@ -1,23 +1,23 @@
 import { Suspense, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Text, OrbitControls, Float, Environment, useGLTF, Sphere, Box } from '@react-three/drei'
+import { Text, OrbitControls, Float, Environment, Sphere, Box, Cylinder } from '@react-three/drei'
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import * as THREE from 'three'
 
 // Componente 3D do haltere
-function Dumbbell({ position = [0, 0, 0] }) {
+function Dumbbell({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
   const groupRef = useRef()
   
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.3
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.3 + rotation[1]
       groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime) * 0.2
     }
   })
 
   return (
-    <group ref={groupRef} position={position}>
+    <group ref={groupRef} position={position} rotation={rotation}>
       {/* Barra central */}
       <Box args={[2, 0.1, 0.1]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#444444" metalness={0.8} roughness={0.2} />
@@ -34,6 +34,165 @@ function Dumbbell({ position = [0, 0, 0] }) {
   )
 }
 
+// Componente 3D do supino
+function BenchPress({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
+  const groupRef = useRef()
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.2 + rotation[1]
+      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.8) * 0.1
+    }
+  })
+
+  return (
+    <group ref={groupRef} position={position} rotation={rotation}>
+      {/* Banco */}
+      <Box args={[3, 0.2, 1]} position={[0, 0, 0]}>
+        <meshStandardMaterial color="#2a2a2a" metalness={0.3} roughness={0.7} />
+      </Box>
+      
+      {/* Suporte da barra */}
+      <Cylinder args={[0.05, 0.05, 1.5]} position={[-1.2, 0.8, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <meshStandardMaterial color="#666666" metalness={0.8} roughness={0.2} />
+      </Cylinder>
+      <Cylinder args={[0.05, 0.05, 1.5]} position={[1.2, 0.8, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <meshStandardMaterial color="#666666" metalness={0.8} roughness={0.2} />
+      </Cylinder>
+      
+      {/* Barra olímpica */}
+      <Cylinder args={[0.03, 0.03, 2.5]} position={[0, 1.2, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <meshStandardMaterial color="#444444" metalness={0.9} roughness={0.1} />
+      </Cylinder>
+      
+      {/* Pesos na barra */}
+      <Cylinder args={[0.3, 0.3, 0.1]} position={[-0.8, 1.2, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <meshStandardMaterial color="#ff6b35" metalness={0.6} roughness={0.3} />
+      </Cylinder>
+      <Cylinder args={[0.3, 0.3, 0.1]} position={[0.8, 1.2, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <meshStandardMaterial color="#ff6b35" metalness={0.6} roughness={0.3} />
+      </Cylinder>
+    </group>
+  )
+}
+
+// Componente 3D da esteira
+function Treadmill({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
+  const groupRef = useRef()
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.4) * 0.2 + rotation[1]
+      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.6) * 0.15
+    }
+  })
+
+  return (
+    <group ref={groupRef} position={position} rotation={rotation}>
+      {/* Base da esteira */}
+      <Box args={[2.5, 0.3, 1]} position={[0, 0, 0]}>
+        <meshStandardMaterial color="#1a1a1a" metalness={0.4} roughness={0.6} />
+      </Box>
+      
+      {/* Esteira */}
+      <Box args={[2, 0.05, 0.8]} position={[0, 0.2, 0]}>
+        <meshStandardMaterial color="#333333" metalness={0.2} roughness={0.8} />
+      </Box>
+      
+      {/* Painel de controle */}
+      <Box args={[0.8, 0.6, 0.1]} position={[0, 0.5, 0.4]}>
+        <meshStandardMaterial color="#000000" metalness={0.1} roughness={0.9} />
+      </Box>
+      
+      {/* Botões do painel */}
+      <Sphere args={[0.05]} position={[-0.2, 0.5, 0.46]}>
+        <meshStandardMaterial color="#00d4ff" metalness={0.3} roughness={0.7} />
+      </Sphere>
+      <Sphere args={[0.05]} position={[0.2, 0.5, 0.46]}>
+        <meshStandardMaterial color="#ff6b35" metalness={0.3} roughness={0.7} />
+      </Sphere>
+    </group>
+  )
+}
+
+// Componente 3D da bicicleta ergométrica
+function ExerciseBike({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
+  const groupRef = useRef()
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.35) * 0.25 + rotation[1]
+      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.7) * 0.12
+    }
+  })
+
+  return (
+    <group ref={groupRef} position={position} rotation={rotation}>
+      {/* Base da bicicleta */}
+      <Box args={[1.5, 0.2, 0.8]} position={[0, 0, 0]}>
+        <meshStandardMaterial color="#2a2a2a" metalness={0.3} roughness={0.7} />
+      </Box>
+      
+      {/* Assento */}
+      <Box args={[0.4, 0.1, 0.3]} position={[0, 0.3, -0.2]}>
+        <meshStandardMaterial color="#444444" metalness={0.2} roughness={0.8} />
+      </Box>
+      
+      {/* Guidão */}
+      <Cylinder args={[0.02, 0.02, 0.6]} position={[0, 0.6, 0.2]} rotation={[0, 0, Math.PI / 2]}>
+        <meshStandardMaterial color="#666666" metalness={0.8} roughness={0.2} />
+      </Cylinder>
+      
+      {/* Pedais */}
+      <Cylinder args={[0.05, 0.05, 0.3]} position={[0, 0.1, 0.3]} rotation={[0, 0, Math.PI / 2]}>
+        <meshStandardMaterial color="#444444" metalness={0.8} roughness={0.2} />
+      </Cylinder>
+      
+      {/* Roda de inércia */}
+      <Cylinder args={[0.3, 0.3, 0.1]} position={[0, 0.2, 0.4]}>
+        <meshStandardMaterial color="#ff6b35" metalness={0.6} roughness={0.3} />
+      </Cylinder>
+    </group>
+  )
+}
+
+// Componente 3D da barra olímpica
+function OlympicBar({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
+  const groupRef = useRef()
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.6) * 0.4 + rotation[1]
+      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.9) * 0.25
+    }
+  })
+
+  return (
+    <group ref={groupRef} position={position} rotation={rotation}>
+      {/* Barra principal */}
+      <Cylinder args={[0.02, 0.02, 2.2]} position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <meshStandardMaterial color="#444444" metalness={0.9} roughness={0.1} />
+      </Cylinder>
+      
+      {/* Pesos olímpicos */}
+      <Cylinder args={[0.4, 0.4, 0.15]} position={[-0.6, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <meshStandardMaterial color="#ff6b35" metalness={0.6} roughness={0.3} />
+      </Cylinder>
+      <Cylinder args={[0.4, 0.4, 0.15]} position={[0.6, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <meshStandardMaterial color="#ff6b35" metalness={0.6} roughness={0.3} />
+      </Cylinder>
+      
+      {/* Travessas de segurança */}
+      <Cylinder args={[0.01, 0.01, 0.3]} position={[-0.8, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <meshStandardMaterial color="#666666" metalness={0.8} roughness={0.2} />
+      </Cylinder>
+      <Cylinder args={[0.01, 0.01, 0.3]} position={[0.8, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <meshStandardMaterial color="#666666" metalness={0.8} roughness={0.2} />
+      </Cylinder>
+    </group>
+  )
+}
+
 // Componente de texto 3D flutuante
 function FloatingText({ text, position, color = "#ffffff" }) {
   return (
@@ -44,7 +203,6 @@ function FloatingText({ text, position, color = "#ffffff" }) {
         color={color}
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter-bold.woff"
       >
         {text}
       </Text>
@@ -55,13 +213,13 @@ function FloatingText({ text, position, color = "#ffffff" }) {
 // Componente de partículas
 function Particles() {
   const particlesRef = useRef()
-  const particleCount = 100
+  const particleCount = 50
   
   const positions = new Float32Array(particleCount * 3)
   for (let i = 0; i < particleCount; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 20
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 20
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 20
+    positions[i * 3] = (Math.random() - 0.5) * 15
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 15
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 15
   }
 
   useFrame((state) => {
@@ -86,30 +244,34 @@ function Particles() {
 }
 
 // Componente principal da cena 3D
-function Scene() {
+function Scene({ currentEquipment = 0 }) {
+  const equipmentModels = [
+    { component: Dumbbell, position: [0, 0, 0], rotation: [0, 0, 0] },
+    { component: BenchPress, position: [0, 0, 0], rotation: [0, 0, 0] },
+    { component: Treadmill, position: [0, 0, 0], rotation: [0, 0, 0] },
+    { component: ExerciseBike, position: [0, 0, 0], rotation: [0, 0, 0] },
+    { component: OlympicBar, position: [0, 0, 0], rotation: [0, 0, 0] }
+  ]
+
+  const CurrentModel = equipmentModels[currentEquipment].component
+  const { position, rotation } = equipmentModels[currentEquipment]
+
   return (
     <>
-      <ambientLight intensity={0.4} />
-      <pointLight position={[10, 10, 10]} intensity={1} color="#ff6b35" />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#00d4ff" />
+      <ambientLight intensity={0.6} />
+      <pointLight position={[10, 10, 10]} intensity={1.2} color="#ff6b35" />
+      <pointLight position={[-10, -10, -10]} intensity={0.8} color="#00d4ff" />
       
       <Particles />
       
-      <Dumbbell position={[0, 0, 0]} />
+      <CurrentModel position={position} rotation={rotation} />
       
       <FloatingText text="FORÇA" position={[-3, 2, 0]} color="#ff6b35" />
-      <FloatingText text="RESISTÊNCIA" position={[3, 1, 0]} color="#00d4ff" />
-      <FloatingText text="POTÊNCIA" position={[0, -2, 0]} color="#ffd700" />
+      <FloatingText text="MÚSCULO" position={[3, -2, 0]} color="#00d4ff" />
+      <FloatingText text="RESISTÊNCIA" position={[0, 3, 0]} color="#ffffff" />
       
-      <Environment preset="night" />
-      <OrbitControls 
-        enableZoom={false} 
-        enablePan={false}
-        autoRotate
-        autoRotateSpeed={2}
-        maxPolarAngle={Math.PI / 2}
-        minPolarAngle={Math.PI / 2}
-      />
+      <Environment preset="city" />
+      <OrbitControls enableZoom={false} enablePan={false} />
     </>
   )
 }
@@ -117,28 +279,39 @@ function Scene() {
 const ThreeD = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, threshold: 0.3 })
-  const [selectedFeature, setSelectedFeature] = useState(0)
+  const [selectedEquipment, setSelectedEquipment] = useState(0)
+  const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0)
 
-  const features = [
+  const equipment = [
     {
-      title: "Análise Corporal 3D",
-      description: "Escaneamento completo do seu corpo em alta resolução para acompanhar cada mudança.",
-      stats: "Precisão de 99.5%"
+      title: "Halteres Profissionais",
+      description: "Equipamentos de alta qualidade para treinos de força e hipertrofia muscular.",
+      stats: "Pesos de 1kg a 50kg",
+      model: "dumbbell"
     },
     {
-      title: "Movimento Inteligente", 
-      description: "IA que analisa seus movimentos em tempo real e corrige posturas automaticamente.",
-      stats: "50+ exercícios monitorados"
+      title: "Supino Reto", 
+      description: "Banco de supino com barra olímpica para exercícios de peito e tríceps.",
+      stats: "Suporte até 300kg",
+      model: "bench"
     },
     {
-      title: "Realidade Aumentada",
-      description: "Visualize seus músculos trabalhando e acompanhe o progresso em tempo real.",
-      stats: "Tecnologia AR exclusiva"
+      title: "Esteiras Premium",
+      description: "Esteiras de alta performance para treinos cardiovasculares intensos.",
+      stats: "Velocidade até 20km/h",
+      model: "treadmill"
     },
     {
-      title: "Simulação de Resultados",
-      description: "Veja como ficará seu corpo com nossos algoritmos de projeção futura.",
-      stats: "Projeção até 12 meses"
+      title: "Bicicletas Ergométricas",
+      description: "Bicicletas ergométricas para treinos de resistência e perda de peso.",
+      stats: "20 níveis de resistência",
+      model: "bike"
+    },
+    {
+      title: "Barras Olímpicas",
+      description: "Barras de levantamento de peso para exercícios compostos e força máxima.",
+      stats: "Suporte até 500kg",
+      model: "bar"
     }
   ]
 
@@ -154,124 +327,174 @@ const ThreeD = () => {
   }
 
   const itemVariants = {
-    hidden: { x: -50, opacity: 0 },
+    hidden: { y: 50, opacity: 0 },
     visible: {
-      x: 0,
+      y: 0,
       opacity: 1,
       transition: { duration: 0.8, ease: "easeOut" }
     }
   }
 
+  const handleEquipmentClick = (index) => {
+    setSelectedEquipment(index)
+    setCurrentCarouselIndex(index)
+  }
+
+  const nextEquipment = () => {
+    const next = (currentCarouselIndex + 1) % equipment.length
+    setCurrentCarouselIndex(next)
+    setSelectedEquipment(next)
+  }
+
+  const prevEquipment = () => {
+    const prev = currentCarouselIndex === 0 ? equipment.length - 1 : currentCarouselIndex - 1
+    setCurrentCarouselIndex(prev)
+    setSelectedEquipment(prev)
+  }
+
   return (
-    <section className="threed-section section" id="technology" ref={ref}>
+    <section className="equipment-section section" id="equipment" ref={ref}>
       <div className="container">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="threed-content"
+          className="equipment-content"
         >
-          <div className="content-grid">
-            {/* Lado esquerdo - Informações */}
-            <div className="info-side">
-              <motion.div variants={itemVariants}>
-                <h2 className="section-title">
-                  Tecnologia <span className="gradient-text">3D</span> Revolucionária
-                </h2>
-                <p className="section-subtitle">
-                  Experimente o futuro do fitness com nossa tecnologia de ponta que 
-                  transforma completamente a forma como você treina e acompanha seus resultados.
-                </p>
-              </motion.div>
+          {/* Header da seção */}
+          <motion.div className="section-header" variants={itemVariants}>
+            <h2 className="section-title">
+              Equipamentos <span className="gradient-text">3D</span> de Alta Performance
+            </h2>
+            <p className="section-subtitle">
+              Descubra nossa coleção completa de equipamentos de academia de última geração, 
+              projetados para maximizar seus resultados e transformar seu corpo.
+            </p>
+          </motion.div>
 
-              <motion.div className="features-list" variants={containerVariants}>
-                {features.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    className={`feature-item ${selectedFeature === index ? 'active' : ''}`}
-                    variants={itemVariants}
-                    onClick={() => setSelectedFeature(index)}
-                    whileHover={{ x: 10 }}
-                  >
-                    <div className="feature-number">{String(index + 1).padStart(2, '0')}</div>
-                    <div className="feature-content">
-                      <h3>{feature.title}</h3>
-                      <p>{feature.description}</p>
-                      <div className="feature-stats">{feature.stats}</div>
-                    </div>
-                  </motion.div>
-                ))}
+          {/* Cards dos equipamentos em linha horizontal */}
+          <motion.div className="equipment-cards-row" variants={containerVariants}>
+            {equipment.map((item, index) => (
+              <motion.div
+                key={index}
+                className={`equipment-card ${selectedEquipment === index ? 'active' : ''}`}
+                variants={itemVariants}
+                onClick={() => handleEquipmentClick(index)}
+                whileHover={{ y: -10, scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="card-number">{String(index + 1).padStart(2, '0')}</div>
+                <div className="card-content">
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                  <div className="card-stats">{item.stats}</div>
+                </div>
               </motion.div>
+            ))}
+          </motion.div>
 
-              <motion.div variants={itemVariants} className="threed-cta">
-                <motion.button
-                  className="btn-primary"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Experimentar Tecnologia 3D
-                </motion.button>
-                <motion.button
-                  className="btn-secondary"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Agendar Demonstração
-                </motion.button>
-              </motion.div>
-            </div>
-
-            {/* Lado direito - Canvas 3D */}
-            <motion.div 
-              className="canvas-side"
-              variants={itemVariants}
-            >
+          {/* Carousel 3D com fundo branco */}
+          <motion.div className="carousel-section" variants={itemVariants}>
+            <div className="carousel-container">
               <div className="canvas-container">
                 <Canvas
                   camera={{ position: [5, 0, 5], fov: 60 }}
                   gl={{ antialias: true, alpha: true }}
+                  style={{ background: 'transparent' }}
                 >
                   <Suspense fallback={null}>
-                    <Scene />
+                    <Scene currentEquipment={currentCarouselIndex} />
                   </Suspense>
                 </Canvas>
                 
+                {/* Controles do Carousel */}
+                <div className="carousel-controls">
+                  <motion.button
+                    className="carousel-btn prev"
+                    onClick={prevEquipment}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    ‹
+                  </motion.button>
+                  <motion.button
+                    className="carousel-btn next"
+                    onClick={nextEquipment}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    ›
+                  </motion.button>
+                </div>
+
+                {/* Indicadores do Carousel */}
+                <div className="carousel-indicators">
+                  {equipment.map((_, index) => (
+                    <motion.div
+                      key={index}
+                      className={`indicator ${currentCarouselIndex === index ? 'active' : ''}`}
+                      onClick={() => handleEquipmentClick(index)}
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.8 }}
+                    />
+                  ))}
+                </div>
+                
                 <div className="canvas-overlay">
-                  <div className="tech-badge">
+                  <div className="equipment-badge">
                     <div className="pulse-dot"></div>
-                    <span>Tecnologia Ativa</span>
+                    <span>Equipamentos 3D</span>
                   </div>
                 </div>
               </div>
 
-              <div className="tech-stats">
+              <div className="carousel-stats">
                 <div className="stat">
-                  <div className="stat-value">4K</div>
-                  <div className="stat-label">Resolução de Scan</div>
+                  <div className="stat-value">100+</div>
+                  <div className="stat-label">Equipamentos</div>
                 </div>
                 <div className="stat">
-                  <div className="stat-value">0.1s</div>
-                  <div className="stat-label">Tempo de Resposta</div>
+                  <div className="stat-value">24h</div>
+                  <div className="stat-label">Disponibilidade</div>
                 </div>
                 <div className="stat">
-                  <div className="stat-value">360°</div>
-                  <div className="stat-label">Análise Completa</div>
+                  <div className="stat-value">Premium</div>
+                  <div className="stat-label">Qualidade</div>
                 </div>
               </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
+
+          {/* Botões de ação */}
+          <motion.div variants={itemVariants} className="equipment-cta">
+            <motion.button
+              className="btn-primary"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Conhecer Equipamentos
+            </motion.button>
+            <motion.button
+              className="btn-secondary"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Agendar Visita
+            </motion.button>
+          </motion.div>
         </motion.div>
       </div>
 
       <style>{`
-        .threed-section {
+        .equipment-section {
           background: linear-gradient(135deg, #000000 0%, #1a0a0a 50%, #000000 100%);
           position: relative;
           overflow: hidden;
           min-height: 100vh;
+          padding: 2rem 0;
         }
 
-        .threed-section::before {
+        .equipment-section::before {
           content: '';
           position: absolute;
           top: 0;
@@ -284,462 +507,391 @@ const ThreeD = () => {
           pointer-events: none;
         }
 
-        .threed-content {
-          padding: 4rem 0;
+        .equipment-content {
+          padding: 2rem 0;
           position: relative;
           z-index: 1;
         }
 
-        .content-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 4rem;
-          align-items: center;
-          min-height: 80vh;
-        }
-
-        .info-side {
-          padding: 2rem 0;
+        .section-header {
+          text-align: center;
+          margin-bottom: 3rem;
         }
 
         .section-title {
-          text-align: left;
-          margin-bottom: 1.5rem;
+          font-size: clamp(2rem, 5vw, 3.5rem);
+          font-weight: 800;
+          color: #ffffff;
+          margin-bottom: 1rem;
+          line-height: 1.1;
+        }
+
+        .gradient-text {
+          background: linear-gradient(135deg, #ff6b35 0%, #00d4ff 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
 
         .section-subtitle {
-          text-align: left;
-          margin-bottom: 3rem;
-          font-size: 1.2rem;
+          font-size: clamp(1rem, 3vw, 1.2rem);
+          color: #cccccc;
+          line-height: 1.6;
+          max-width: 800px;
+          margin: 0 auto;
         }
 
-        .features-list {
-          margin-bottom: 3rem;
+        .equipment-cards-row {
           display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .feature-item {
-          display: flex;
-          align-items: flex-start;
           gap: 1.5rem;
-          padding: 1.5rem;
-          margin-bottom: 1rem;
-          border-radius: 15px;
+          margin-bottom: 3rem;
+          overflow-x: auto;
+          padding: 1rem 0;
+        }
+
+        .equipment-card {
+          flex: 1;
+          min-width: 250px;
+          max-width: 300px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 16px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          padding: 2rem;
           cursor: pointer;
           transition: all 0.3s ease;
-          border: 1px solid transparent;
-          background: rgba(255, 255, 255, 0.02);
-          word-wrap: break-word;
-          overflow-wrap: break-word;
-          max-width: 100%;
-          width: 100%;
+          position: relative;
+          overflow: hidden;
         }
 
-        .feature-item:hover,
-        .feature-item.active {
-          background: rgba(255, 107, 53, 0.1);
+        .equipment-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(0, 212, 255, 0.05) 100%);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .equipment-card:hover::before {
+          opacity: 1;
+        }
+
+        .equipment-card:hover {
           border-color: rgba(255, 107, 53, 0.3);
-          transform: translateX(10px);
+          transform: translateY(-10px);
         }
 
-        .feature-number {
-          font-size: 1.5rem;
-          font-weight: 900;
-          color: var(--primary);
-          min-width: 3rem;
-          flex-shrink: 0;
+        .equipment-card.active {
+          background: rgba(255, 107, 53, 0.15);
+          border-color: rgba(255, 107, 53, 0.5);
         }
 
-        .feature-content {
-          flex: 1;
-          min-width: 0;
+        .equipment-card.active::before {
+          opacity: 1;
         }
 
-        .feature-content h3 {
-          font-size: 1.2rem;
+        .card-number {
+          font-size: 2rem;
           font-weight: 700;
-          margin-bottom: 0.5rem;
-          color: var(--text-light);
-          word-wrap: break-word;
-          overflow-wrap: break-word;
+          color: #ff6b35;
+          margin-bottom: 1rem;
         }
 
-        .feature-content p {
-          color: var(--text-gray);
-          line-height: 1.6;
-          margin-bottom: 0.5rem;
-          word-wrap: break-word;
-          overflow-wrap: break-word;
-        }
-
-        .feature-stats {
-          color: var(--primary);
+        .card-content h3 {
+          font-size: clamp(1.1rem, 2.5vw, 1.3rem);
           font-weight: 600;
-          font-size: 0.9rem;
-          word-wrap: break-word;
-          overflow-wrap: break-word;
+          color: #ffffff;
+          margin-bottom: 0.8rem;
         }
 
-        .threed-cta {
-          display: flex;
-          gap: 1.5rem;
-          flex-wrap: wrap;
+        .card-content p {
+          font-size: clamp(0.9rem, 2vw, 0.95rem);
+          color: #cccccc;
+          line-height: 1.5;
+          margin-bottom: 1rem;
         }
 
-        .canvas-side {
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
+        .card-stats {
+          font-size: 0.85rem;
+          color: #ff6b35;
+          font-weight: 600;
+        }
+
+        .carousel-section {
+          background: #ffffff;
+          border-radius: 20px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel-container {
+          position: relative;
         }
 
         .canvas-container {
-          height: 500px;
-          border-radius: 20px;
-          overflow: hidden;
           position: relative;
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+          width: 100%;
+          height: 400px;
+          border-radius: 16px;
+          overflow: hidden;
+          background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+          border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel-controls {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          right: 0;
+          transform: translateY(-50%);
+          display: flex;
+          justify-content: space-between;
+          padding: 0 20px;
+          z-index: 20;
+        }
+
+        .carousel-btn {
+          background: rgba(255, 107, 53, 0.9);
+          color: white;
+          border: none;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          font-size: 24px;
+          font-weight: bold;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
           backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+
+        .carousel-btn:hover {
+          background: rgba(255, 107, 53, 1);
+          transform: scale(1.1);
+        }
+
+        .carousel-indicators {
+          position: absolute;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 10px;
+          z-index: 20;
+        }
+
+        .indicator {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: rgba(0, 0, 0, 0.3);
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+          background: #ff6b35;
+          transform: scale(1.2);
         }
 
         .canvas-overlay {
           position: absolute;
-          top: 1rem;
-          right: 1rem;
+          top: 20px;
+          right: 20px;
           z-index: 10;
         }
 
-        .tech-badge {
-          background: rgba(255, 107, 53, 0.9);
-          color: white;
-          padding: 0.5rem 1rem;
-          border-radius: 25px;
+        .equipment-badge {
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          font-size: 0.8rem;
+          background: rgba(255, 107, 53, 0.9);
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          border: 1px solid rgba(255, 107, 53, 0.3);
+          color: #ffffff;
+          font-size: 0.9rem;
           font-weight: 600;
-          backdrop-filter: blur(10px);
+          box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
         }
 
         .pulse-dot {
           width: 8px;
           height: 8px;
-          background: #00ff00;
+          background: #ffffff;
           border-radius: 50%;
-          animation: pulse-dot 2s infinite;
+          animation: pulse 2s infinite;
         }
 
-        @keyframes pulse-dot {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.2); }
+        @keyframes pulse {
+          0% { opacity: 1; }
+          50% { opacity: 0.5; }
+          100% { opacity: 1; }
         }
 
-        .tech-stats {
+        .carousel-stats {
           display: flex;
-          justify-content: space-around;
-          background: rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 15px;
-          padding: 1.5rem;
+          justify-content: space-between;
+          margin-top: 2rem;
+          gap: 1rem;
         }
 
         .stat {
           text-align: center;
+          flex: 1;
         }
 
         .stat-value {
-          font-size: 1.8rem;
-          font-weight: 900;
-          color: var(--primary);
-          margin-bottom: 0.3rem;
+          font-size: clamp(1.5rem, 4vw, 2rem);
+          font-weight: 700;
+          color: #ff6b35;
+          margin-bottom: 0.5rem;
         }
 
         .stat-label {
-          font-size: 0.8rem;
-          color: var(--text-gray);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
+          font-size: clamp(0.8rem, 2vw, 0.9rem);
+          color: #666666;
+          font-weight: 500;
+        }
+
+        .equipment-cta {
+          display: flex;
+          gap: 1rem;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .btn-primary {
+          background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+          color: #ffffff;
+          border: none;
+          padding: 1rem 2rem;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          min-width: 200px;
+        }
+
+        .btn-secondary {
+          background: transparent;
+          color: #ffffff;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          padding: 1rem 2rem;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          min-width: 200px;
+        }
+
+        .btn-secondary:hover {
+          border-color: #ff6b35;
+          color: #ff6b35;
         }
 
         @media (max-width: 1024px) {
-          .content-grid {
-            grid-template-columns: 1fr;
-            gap: 3rem;
+          .equipment-cards-row {
+            flex-wrap: wrap;
+            justify-content: center;
+          }
+
+          .equipment-card {
+            min-width: 200px;
+            max-width: 250px;
           }
 
           .canvas-container {
-            height: 400px;
-          }
-
-          .section-title {
-            font-size: 2.5rem;
-          }
-
-          .section-subtitle {
-            font-size: 1.1rem;
-          }
-
-          .feature-item {
-            padding: 1.2rem;
-          }
-
-          .feature-content h3 {
-            font-size: 1.1rem;
-          }
-
-          .feature-content p {
-            font-size: 0.95rem;
+            height: 350px;
           }
         }
 
         @media (max-width: 768px) {
-          .threed-content {
-            padding: 2rem 0;
-          }
-
-          .content-grid {
-            gap: 2rem;
-            min-height: auto;
-          }
-
-          .info-side {
+          .equipment-section {
             padding: 1rem 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
           }
 
-          .section-title {
-            font-size: 2rem;
-            text-align: center;
+          .equipment-content {
+            padding: 1rem 0;
           }
 
-          .section-subtitle {
-            font-size: 1rem;
-            text-align: center;
+          .section-header {
             margin-bottom: 2rem;
-            max-width: 90%;
           }
 
-          .features-list {
-            width: 100%;
-            max-width: 500px;
+          .equipment-cards-row {
+            flex-direction: column;
             align-items: center;
+            gap: 1rem;
           }
 
-          .feature-item {
-            flex-direction: column;
-            gap: 1rem;
+          .equipment-card {
+            width: 100%;
+            max-width: 400px;
+          }
+
+          .carousel-section {
             padding: 1rem;
-            margin-bottom: 0.8rem;
-            max-width: 100%;
-            width: 100%;
-            text-align: center;
-          }
-
-          .feature-number {
-            font-size: 1.3rem;
-            min-width: 2.5rem;
-          }
-
-          .feature-content {
-            width: 100%;
-            max-width: 100%;
-          }
-
-          .feature-content h3 {
-            font-size: 1.1rem;
-            text-align: center;
-          }
-
-          .feature-content p {
-            font-size: 0.9rem;
-            text-align: center;
-            max-width: 100%;
-          }
-
-          .feature-stats {
-            font-size: 0.8rem;
-            text-align: center;
-          }
-
-          .threed-cta {
-            flex-direction: column;
-            gap: 1rem;
-            align-items: center;
-            width: 100%;
-            max-width: 500px;
-          }
-
-          .tech-stats {
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1rem;
-            max-width: 500px;
-            width: 100%;
           }
 
           .canvas-container {
             height: 300px;
           }
+
+          .carousel-stats {
+            flex-direction: column;
+            gap: 1rem;
+          }
+
+          .carousel-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+          }
+
+          .equipment-cta {
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .btn-primary,
+          .btn-secondary {
+            width: 100%;
+            max-width: 300px;
+          }
         }
 
         @media (max-width: 480px) {
-          .threed-content {
-            padding: 1rem 0;
-          }
-
-          .info-side {
+          .equipment-section {
             padding: 0.5rem 0;
-          }
-
-          .section-title {
-            font-size: 1.8rem;
-          }
-
-          .section-subtitle {
-            font-size: 0.9rem;
-            max-width: 95%;
-          }
-
-          .features-list {
-            max-width: 400px;
-            width: 100%;
-          }
-
-          .feature-item {
-            padding: 0.8rem;
-            margin-bottom: 0.6rem;
-            max-width: 100%;
-            width: 100%;
-          }
-
-          .feature-number {
-            font-size: 1.2rem;
-            min-width: 2rem;
-          }
-
-          .feature-content {
-            width: 100%;
-            max-width: 100%;
-          }
-
-          .feature-content h3 {
-            font-size: 1rem;
-          }
-
-          .feature-content p {
-            font-size: 0.8rem;
-            max-width: 100%;
-          }
-
-          .feature-stats {
-            font-size: 0.75rem;
-          }
-
-          .threed-cta {
-            max-width: 400px;
-            width: 100%;
-          }
-
-          .tech-stats {
-            padding: 0.8rem;
-            max-width: 400px;
-            width: 100%;
-          }
-
-          .stat-value {
-            font-size: 1.5rem;
-          }
-
-          .stat-label {
-            font-size: 0.7rem;
           }
 
           .canvas-container {
             height: 250px;
           }
-        }
 
-        @media (max-width: 360px) {
-          .threed-content {
-            padding: 0.8rem 0;
+          .carousel-controls {
+            padding: 0 10px;
           }
 
-          .info-side {
-            padding: 0.3rem 0;
+          .carousel-btn {
+            width: 35px;
+            height: 35px;
+            font-size: 18px;
           }
 
-          .section-title {
-            font-size: 1.6rem;
-          }
-
-          .section-subtitle {
+          .equipment-badge {
             font-size: 0.8rem;
-            max-width: 98%;
-          }
-
-          .features-list {
-            max-width: 350px;
-            width: 100%;
-          }
-
-          .feature-item {
-            padding: 0.6rem;
-            margin-bottom: 0.5rem;
-            max-width: 100%;
-            width: 100%;
-          }
-
-          .feature-number {
-            font-size: 1.1rem;
-            min-width: 1.8rem;
-          }
-
-          .feature-content {
-            width: 100%;
-            max-width: 100%;
-          }
-
-          .feature-content h3 {
-            font-size: 0.9rem;
-          }
-
-          .feature-content p {
-            font-size: 0.75rem;
-            max-width: 100%;
-          }
-
-          .feature-stats {
-            font-size: 0.7rem;
-          }
-
-          .threed-cta {
-            max-width: 350px;
-            width: 100%;
-          }
-
-          .tech-stats {
-            padding: 0.6rem;
-            max-width: 350px;
-            width: 100%;
-          }
-
-          .stat-value {
-            font-size: 1.3rem;
-          }
-
-          .stat-label {
-            font-size: 0.65rem;
-          }
-
-          .canvas-container {
-            height: 200px;
+            padding: 0.4rem 0.8rem;
           }
         }
       `}</style>
