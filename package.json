@@ -5,12 +5,16 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "vercel-build": "vite build"
   },
   "keywords": ["fitness", "gym", "react", "vite", "3d"],
   "author": "",
   "license": "MIT",
   "description": "Landing page motion design para academia com elementos 2D e 3D",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@react-three/drei": "^10.6.1",
     "@react-three/fiber": "^9.2.0",
