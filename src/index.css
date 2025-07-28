@@ -13,7 +13,7 @@
   --accent: #ffd700;
   --text-light: #ffffff;
   --text-dark: #333333;
-  --text-gray: #666666;
+  --text-gray: #cccccc;
   --background: #000000;
   --background-light: #111111;
   --gradient-primary: linear-gradient(135deg, #ff6b35 0%, #e85a30 100%);
@@ -25,13 +25,19 @@ html {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   background-color: var(--background);
-  color: var(--text-light);
+  color: var(--text-light) !important;
   line-height: 1.6;
   overflow-x: hidden;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  font-display: swap;
+}
+
+/* Garantir que todo texto seja branco */
+h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, label {
+  color: var(--text-light) !important;
 }
 
 .container {
@@ -53,7 +59,7 @@ body {
 
 .btn-primary {
   background: var(--gradient-primary);
-  color: var(--text-light);
+  color: var(--text-light) !important;
   border: none;
   padding: 1rem 2rem;
   border-radius: 50px;
@@ -73,7 +79,7 @@ body {
 
 .btn-secondary {
   background: transparent;
-  color: var(--text-light);
+  color: var(--text-light) !important;
   border: 2px solid var(--primary);
   padding: 1rem 2rem;
   border-radius: 50px;
@@ -96,6 +102,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent !important;
 }
 
 .section-title {
@@ -103,15 +110,49 @@ body {
   font-weight: 800;
   text-align: center;
   margin-bottom: 2rem;
+  color: var(--text-light) !important;
 }
 
 .section-subtitle {
   font-size: 1.2rem;
-  color: var(--text-gray);
+  color: var(--text-gray) !important;
   text-align: center;
   margin-bottom: 3rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+/* Fallback para fontes que não carregam */
+@font-face {
+  font-family: 'Inter-Fallback';
+  src: local('Arial');
+  font-display: swap;
+}
+
+/* Garantir que elementos específicos tenham cor branca */
+.hero-section *,
+.equipment-section *,
+.about-section *,
+.services-section *,
+.testimonials-section *,
+.contact-section *,
+.footer-section * {
+  color: var(--text-light) !important;
+}
+
+/* Exceções para elementos que devem ter cores específicas */
+.gradient-text,
+.badge,
+.stat-value,
+.equipment-number,
+.card-number {
+  color: var(--primary) !important;
+}
+
+.stat-label,
+.card-stats,
+.equipment-stats {
+  color: var(--text-gray) !important;
 }
 
 @media (max-width: 1024px) {
