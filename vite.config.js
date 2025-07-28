@@ -8,6 +8,12 @@ export default defineConfig({
     open: true
   },
   build: {
-    outDir: 'dist'
-  }
+    outDir: 'dist',
+    rollupOptions: {
+      input: {
+        main: './index.html'
+      }
+    }
+  },
+  base: './'
 }) 

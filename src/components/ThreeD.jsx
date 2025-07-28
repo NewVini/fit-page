@@ -34,165 +34,6 @@ function Dumbbell({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
   )
 }
 
-// Componente 3D do supino
-function BenchPress({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
-  const groupRef = useRef()
-  
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.2 + rotation[1]
-      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.8) * 0.1
-    }
-  })
-
-  return (
-    <group ref={groupRef} position={position} rotation={rotation}>
-      {/* Banco */}
-      <Box args={[3, 0.2, 1]} position={[0, 0, 0]}>
-        <meshStandardMaterial color="#2a2a2a" metalness={0.3} roughness={0.7} />
-      </Box>
-      
-      {/* Suporte da barra */}
-      <Cylinder args={[0.05, 0.05, 1.5]} position={[-1.2, 0.8, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <meshStandardMaterial color="#666666" metalness={0.8} roughness={0.2} />
-      </Cylinder>
-      <Cylinder args={[0.05, 0.05, 1.5]} position={[1.2, 0.8, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <meshStandardMaterial color="#666666" metalness={0.8} roughness={0.2} />
-      </Cylinder>
-      
-      {/* Barra olímpica */}
-      <Cylinder args={[0.03, 0.03, 2.5]} position={[0, 1.2, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <meshStandardMaterial color="#444444" metalness={0.9} roughness={0.1} />
-      </Cylinder>
-      
-      {/* Pesos na barra */}
-      <Cylinder args={[0.3, 0.3, 0.1]} position={[-0.8, 1.2, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <meshStandardMaterial color="#ff6b35" metalness={0.6} roughness={0.3} />
-      </Cylinder>
-      <Cylinder args={[0.3, 0.3, 0.1]} position={[0.8, 1.2, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <meshStandardMaterial color="#ff6b35" metalness={0.6} roughness={0.3} />
-      </Cylinder>
-    </group>
-  )
-}
-
-// Componente 3D da esteira
-function Treadmill({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
-  const groupRef = useRef()
-  
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.4) * 0.2 + rotation[1]
-      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.6) * 0.15
-    }
-  })
-
-  return (
-    <group ref={groupRef} position={position} rotation={rotation}>
-      {/* Base da esteira */}
-      <Box args={[2.5, 0.3, 1]} position={[0, 0, 0]}>
-        <meshStandardMaterial color="#1a1a1a" metalness={0.4} roughness={0.6} />
-      </Box>
-      
-      {/* Esteira */}
-      <Box args={[2, 0.05, 0.8]} position={[0, 0.2, 0]}>
-        <meshStandardMaterial color="#333333" metalness={0.2} roughness={0.8} />
-      </Box>
-      
-      {/* Painel de controle */}
-      <Box args={[0.8, 0.6, 0.1]} position={[0, 0.5, 0.4]}>
-        <meshStandardMaterial color="#000000" metalness={0.1} roughness={0.9} />
-      </Box>
-      
-      {/* Botões do painel */}
-      <Sphere args={[0.05]} position={[-0.2, 0.5, 0.46]}>
-        <meshStandardMaterial color="#00d4ff" metalness={0.3} roughness={0.7} />
-      </Sphere>
-      <Sphere args={[0.05]} position={[0.2, 0.5, 0.46]}>
-        <meshStandardMaterial color="#ff6b35" metalness={0.3} roughness={0.7} />
-      </Sphere>
-    </group>
-  )
-}
-
-// Componente 3D da bicicleta ergométrica
-function ExerciseBike({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
-  const groupRef = useRef()
-  
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.35) * 0.25 + rotation[1]
-      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.7) * 0.12
-    }
-  })
-
-  return (
-    <group ref={groupRef} position={position} rotation={rotation}>
-      {/* Base da bicicleta */}
-      <Box args={[1.5, 0.2, 0.8]} position={[0, 0, 0]}>
-        <meshStandardMaterial color="#2a2a2a" metalness={0.3} roughness={0.7} />
-      </Box>
-      
-      {/* Assento */}
-      <Box args={[0.4, 0.1, 0.3]} position={[0, 0.3, -0.2]}>
-        <meshStandardMaterial color="#444444" metalness={0.2} roughness={0.8} />
-      </Box>
-      
-      {/* Guidão */}
-      <Cylinder args={[0.02, 0.02, 0.6]} position={[0, 0.6, 0.2]} rotation={[0, 0, Math.PI / 2]}>
-        <meshStandardMaterial color="#666666" metalness={0.8} roughness={0.2} />
-      </Cylinder>
-      
-      {/* Pedais */}
-      <Cylinder args={[0.05, 0.05, 0.3]} position={[0, 0.1, 0.3]} rotation={[0, 0, Math.PI / 2]}>
-        <meshStandardMaterial color="#444444" metalness={0.8} roughness={0.2} />
-      </Cylinder>
-      
-      {/* Roda de inércia */}
-      <Cylinder args={[0.3, 0.3, 0.1]} position={[0, 0.2, 0.4]}>
-        <meshStandardMaterial color="#ff6b35" metalness={0.6} roughness={0.3} />
-      </Cylinder>
-    </group>
-  )
-}
-
-// Componente 3D da barra olímpica
-function OlympicBar({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
-  const groupRef = useRef()
-  
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.6) * 0.4 + rotation[1]
-      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.9) * 0.25
-    }
-  })
-
-  return (
-    <group ref={groupRef} position={position} rotation={rotation}>
-      {/* Barra principal */}
-      <Cylinder args={[0.02, 0.02, 2.2]} position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <meshStandardMaterial color="#444444" metalness={0.9} roughness={0.1} />
-      </Cylinder>
-      
-      {/* Pesos olímpicos */}
-      <Cylinder args={[0.4, 0.4, 0.15]} position={[-0.6, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <meshStandardMaterial color="#ff6b35" metalness={0.6} roughness={0.3} />
-      </Cylinder>
-      <Cylinder args={[0.4, 0.4, 0.15]} position={[0.6, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <meshStandardMaterial color="#ff6b35" metalness={0.6} roughness={0.3} />
-      </Cylinder>
-      
-      {/* Travessas de segurança */}
-      <Cylinder args={[0.01, 0.01, 0.3]} position={[-0.8, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <meshStandardMaterial color="#666666" metalness={0.8} roughness={0.2} />
-      </Cylinder>
-      <Cylinder args={[0.01, 0.01, 0.3]} position={[0.8, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <meshStandardMaterial color="#666666" metalness={0.8} roughness={0.2} />
-      </Cylinder>
-    </group>
-  )
-}
-
 // Componente de texto 3D flutuante
 function FloatingText({ text, position, color = "#ffffff" }) {
   return (
@@ -245,17 +86,6 @@ function Particles() {
 
 // Componente principal da cena 3D
 function Scene({ currentEquipment = 0 }) {
-  const equipmentModels = [
-    { component: Dumbbell, position: [0, 0, 0], rotation: [0, 0, 0] },
-    { component: BenchPress, position: [0, 0, 0], rotation: [0, 0, 0] },
-    { component: Treadmill, position: [0, 0, 0], rotation: [0, 0, 0] },
-    { component: ExerciseBike, position: [0, 0, 0], rotation: [0, 0, 0] },
-    { component: OlympicBar, position: [0, 0, 0], rotation: [0, 0, 0] }
-  ]
-
-  const CurrentModel = equipmentModels[currentEquipment].component
-  const { position, rotation } = equipmentModels[currentEquipment]
-
   return (
     <>
       <ambientLight intensity={0.6} />
@@ -264,7 +94,7 @@ function Scene({ currentEquipment = 0 }) {
       
       <Particles />
       
-      <CurrentModel position={position} rotation={rotation} />
+      <Dumbbell position={[0, 0, 0]} rotation={[0, 0, 0]} />
       
       <FloatingText text="FORÇA" position={[-3, 2, 0]} color="#ff6b35" />
       <FloatingText text="MÚSCULO" position={[3, -2, 0]} color="#00d4ff" />
