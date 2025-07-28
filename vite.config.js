@@ -21,6 +21,10 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'three', '@react-three/fiber', '@react-three/drei', 'framer-motion']
+    include: ['react', 'react-dom', 'three', '@react-three/fiber', '@react-three/drei', 'framer-motion'],
+    exclude: []
+  },
+  define: {
+    global: 'globalThis'
   }
 }) 
