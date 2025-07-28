@@ -12,7 +12,7 @@
   "license": "MIT",
   "description": "Landing page motion design para academia com elementos 2D e 3D",
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   },
   "dependencies": {
     "@react-three/drei": "^10.6.1",
